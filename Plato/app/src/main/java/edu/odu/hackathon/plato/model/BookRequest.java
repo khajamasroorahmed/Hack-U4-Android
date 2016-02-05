@@ -1,5 +1,7 @@
 package edu.odu.hackathon.plato.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,11 +10,11 @@ import java.util.List;
  */
 public class BookRequest {
 
-    List<Book> matches=new ArrayList<Book>();
+    String TAG = "";
+    List<Book> matches = new ArrayList<Book>();
 
-    public BookRequest()
-    {
-
+    public BookRequest() {
+        Log.v(TAG, "Started");
     }
 
     public List<Book> getMatches() {

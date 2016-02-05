@@ -5,29 +5,85 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import edu.odu.hackathon.plato.R;
+import edu.odu.hackathon.plato.Util.StaticData;
 
 /**
  * Created by kahmed on 2/4/16.
  */
-public class InterestActivity extends AppCompatActivity implements InterestFragment.OnDataPass{
+public class InterestActivity extends AppCompatActivity {
 
-    FragmentTransaction mFragmentTransaction;
     private static int MAX_SELECTION = 5;
     Button mBtnSubmit;
+    ListView mListView;
+    EditText mEditTextSearch;
+    ArrayList<String> values;
+    CustomInterestAdapter mAdapter;
+    private String TAG = "InterestActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(TAG, "Started");
         setContentView(R.layout.interests);
-        Fragment interestFragment = new InterestFragment();
-        mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-        mFragmentTransaction.add(R.id.flInterests, interestFragment);
-        mFragmentTransaction.addToBackStack(null);
-        mFragmentTransaction.commit();
+        mListView = (ListView) findViewById(R.id.lvInterests);
+        mEditTextSearch = (EditText) findViewById(R.id.etSearch);
+        final Button btnAdd = (Button) findViewById(R.id.btnAdd);
+
+        mEditTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mAdapter.getFilter().filter(s.toString());
+
+                if(mAdapter.getCount() == 0) {
+                    Log.d(TAG,"Adapter count: " + mAdapter.getCount());
+                    btnAdd.setVisibility(View.VISIBLE);
+                    btnAdd.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //Send item to server.
+                            StaticData.addInterest(mEditTextSearch.getText().toString());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        values = StaticData.getInterestList();
+//        final ListView listview = (ListView) mListView.findViewById(R.id.lvInterests);
+        mAdapter = new CustomInterestAdapter(this, values);
+        mListView.setAdapter(mAdapter);
+        mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        mListView.setItemsCanFocus(false);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "Item Selected: " + mListView.getCheckedItemCount());
+                onDataPass(mListView.getCheckedItemCount());
+            }
+        });
         mBtnSubmit = (Button) findViewById(R.id.button);
         mBtnSubmit.setVisibility(View.GONE);
     }
@@ -37,12 +93,10 @@ public class InterestActivity extends AppCompatActivity implements InterestFragm
         super.onBackPressed();
     }
 
-    @Override
     public void onDataPass(int count) {
         if (count >= MAX_SELECTION) {
             mBtnSubmit.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             mBtnSubmit.setVisibility(View.GONE);
         }
     }

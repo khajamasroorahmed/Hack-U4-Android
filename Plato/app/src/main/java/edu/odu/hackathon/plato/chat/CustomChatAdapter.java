@@ -1,33 +1,32 @@
 package edu.odu.hackathon.plato.chat;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
-
-import edu.odu.hackathon.plato.ImageText;
 import edu.odu.hackathon.plato.R;
+import edu.odu.hackathon.plato.Util.Format;
+import edu.odu.hackathon.plato.model.Chat;
 
 /**
- * Created by kahmed on 2/4/16.
+ * Created by kahmed on 2/5/16.
  */
 public class CustomChatAdapter extends BaseAdapter {
 
+    String TAG = "CustomChatAdapter";
     public Context mContext;
-    public ArrayList<String> mValues;
-    ImageView mIvIcon;
-    ImageText mImageText;
+    public ArrayList<Chat> mValues;
+    public int selfId;
 
-    public CustomChatAdapter(Context context, ArrayList<String> values) {
+    public CustomChatAdapter(Context context, ArrayList<Chat> values, int selfId) {
+        Log.v(TAG,"Started");
         this.mContext = context;
         this.mValues = values;
-        this.mImageText = new ImageText(context);
+        this.selfId = selfId;
     }
 
     @Override
@@ -36,7 +35,7 @@ public class CustomChatAdapter extends BaseAdapter {
     }
 
     @Override
-    public String getItem(int position) {
+    public Chat getItem(int position) {
         return mValues.get(position);
     }
 
@@ -48,16 +47,26 @@ public class CustomChatAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = layoutInflater.inflate(R.layout.chat_list, null);
-        TextView tvPseudonym = (TextView) rowView.findViewById(R.id.tvChatName);
-        tvPseudonym.setText(getItem(position));
-        mIvIcon = (ImageView) rowView.findViewById(R.id.rivChat);
-        setRandomImageIcon();
+        View rowView;
+        Chat item = new Chat(mValues.get(position));
+        Log.d(TAG, "Chat Item: " + item.toString());
+
+        if(item.getId() == selfId) {
+            rowView = layoutInflater.inflate(R.layout.chat_self, null);
+        }
+        else {
+            rowView = layoutInflater.inflate(R.layout.chat_other, null);
+        }
+        TextView tvUserName = (TextView) rowView.findViewById(R.id.tvChatUserName);
+        tvUserName.setText(item.getDisplayName());
+        if(item.getId() == selfId) {
+            tvUserName.setText("You");
+        }
+        TextView tvChatText = (TextView) rowView.findViewById(R.id.tvChatText);
+        tvChatText.setText(item.getChatText());
+        TextView tvChatTime = (TextView) rowView.findViewById(R.id.tvChatTime);
+        tvChatTime.setText(Format.getFuzzyTime(item.getTimeStamp()).toString());
+
         return rowView;
     }
-
-    public void setRandomImageIcon() {
-        mIvIcon.setImageResource(R.drawable.university);
-    }
-
 }

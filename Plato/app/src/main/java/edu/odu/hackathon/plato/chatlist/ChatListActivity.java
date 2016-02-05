@@ -1,7 +1,8 @@
-package edu.odu.hackathon.plato.chat;
+package edu.odu.hackathon.plato.chatlist;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -14,18 +15,20 @@ import edu.odu.hackathon.plato.R;
  */
 public class ChatListActivity extends Activity {
 
+    String TAG = "ChatListActivity";
     ListView mListView;
-    CustomChatAdapter mAdapter;
+    CustomChatListAdapter mAdapter;
     ArrayList<String> values;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(TAG, "Started");
         setContentView(R.layout.activity_chat_list);
         mListView = (ListView) findViewById(R.id.lvChatList);
 
         values = new ArrayList<>(Arrays.asList("Masroor", "Avinash", "Girish",
                 "Bharat", "Raghav", "Kumar", "Alex"));
-        mAdapter = new CustomChatAdapter(this, values);
+        mAdapter = new CustomChatListAdapter(this, values);
         mListView.setAdapter(mAdapter);
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         mListView.setItemsCanFocus(true);

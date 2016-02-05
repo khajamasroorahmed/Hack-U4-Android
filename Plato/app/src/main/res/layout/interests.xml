@@ -28,11 +28,13 @@
             android:background="@drawable/search" />
 
         <Button
-            android:id="@+id/delete"
+            android:id="@+id/btnAdd"
+            android:visibility="gone"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="right|center_vertical"
-            android:layout_margin="8dp" />
+            android:layout_margin="8dp"
+            android:background="@drawable/plus"/>
     </FrameLayout>
 
     <include layout="@layout/interests_list_view"

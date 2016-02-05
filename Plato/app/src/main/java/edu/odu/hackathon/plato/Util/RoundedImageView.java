@@ -1,4 +1,4 @@
-package edu.odu.hackathon.plato;
+package edu.odu.hackathon.plato.Util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -18,6 +18,7 @@ import android.widget.ImageView;
  */
 public class RoundedImageView extends ImageView {
 
+    String TAG = "RoundedImageView";
     public RoundedImageView(Context ctx, AttributeSet attrs) {
         super(ctx, attrs);
     }

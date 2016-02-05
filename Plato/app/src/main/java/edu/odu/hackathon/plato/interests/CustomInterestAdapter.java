@@ -1,6 +1,7 @@
 package edu.odu.hackathon.plato.interests;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,14 @@ import edu.odu.hackathon.plato.R;
  */
 public class CustomInterestAdapter extends BaseAdapter implements Filterable {
 
+    String TAG = "CustomInterestAdapter";
     public Context mContext;
     public ArrayList<String> mValues;
     public ArrayList<String> mTempValues;
     InterestFilter mInterestFilter;
 
     public CustomInterestAdapter(Context context, ArrayList<String> values) {
+        Log.v(TAG, "Started");
         this.mContext = context;
         this.mValues = values;
         this.mTempValues = values;

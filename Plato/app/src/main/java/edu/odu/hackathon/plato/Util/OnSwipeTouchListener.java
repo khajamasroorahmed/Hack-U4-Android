@@ -10,6 +10,7 @@ import android.view.View;
  */
 public class OnSwipeTouchListener implements View.OnTouchListener {
 
+    String TAG = "OnSwipeTouchListener";
     private final GestureDetector gestureDetector;
 
     public OnSwipeTouchListener(Context context) {

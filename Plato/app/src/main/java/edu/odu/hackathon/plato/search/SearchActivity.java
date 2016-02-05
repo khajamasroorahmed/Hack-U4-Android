@@ -1,9 +1,7 @@
-package edu.odu.hackathon.plato.interests;
+package edu.odu.hackathon.plato.search;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,24 +16,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import edu.odu.hackathon.plato.R;
+import edu.odu.hackathon.plato.Util.StaticData;
+import edu.odu.hackathon.plato.interests.CustomInterestAdapter;
 
 /**
  * Created by kahmed on 2/4/16.
  */
-public class NewInterestActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
 
-    private static int MAX_SELECTION = 5;
     Button mBtnSubmit;
     ListView mListView;
     EditText mEditTextSearch;
     ArrayList<String> values;
     CustomInterestAdapter mAdapter;
-    private String TAG = "NewInterestActivity";
-
+    private String TAG = "InterestActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(TAG, "Started");
         setContentView(R.layout.interests);
         mListView = (ListView) findViewById(R.id.lvInterests);
         mEditTextSearch = (EditText) findViewById(R.id.etSearch);
@@ -57,14 +56,7 @@ public class NewInterestActivity extends AppCompatActivity {
             }
         });
 
-        values = new ArrayList<>(Arrays.asList("Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
-                "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-                "Android", "iPhone", "WindowsMobile", "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
-                "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-                "Android", "iPhone", "WindowsMobile"));
+        values = StaticData.getInterestList();
 //        final ListView listview = (ListView) mListView.findViewById(R.id.lvInterests);
         mAdapter = new CustomInterestAdapter(this, values);
         mListView.setAdapter(mAdapter);
@@ -74,24 +66,13 @@ public class NewInterestActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "Item Selected: " + mListView.getCheckedItemCount());
-                onDataPass(mListView.getCheckedItemCount());
             }
         });
         mBtnSubmit = (Button) findViewById(R.id.button);
-        mBtnSubmit.setVisibility(View.GONE);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-    }
-
-    public void onDataPass(int count) {
-        if (count >= MAX_SELECTION) {
-            mBtnSubmit.setVisibility(View.VISIBLE);
-        }
-        else {
-            mBtnSubmit.setVisibility(View.GONE);
-        }
     }
 }

@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/plainbg"
     android:id="@+id/homelayout"
-    tools:context="edu.odu.hackathon.plato.HomeActivity">
-
+    tools:context=".home.HomeActivity">
 
     <LinearLayout
         android:orientation="vertical"
@@ -14,7 +13,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:weightSum="9">
 
 
         <LinearLayout
@@ -22,20 +22,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="30dp"
+            android:weightSum="5"
+            android:layout_weight="1">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:id="@+id/plus"
                 android:maxHeight="30dp"
                 android:maxWidth="30dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/plus"
                 android:clickable="true"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="60dp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -44,20 +45,21 @@
                 android:maxHeight="30dp"
                 android:adjustViewBounds="true"
                 android:clickable="true"
-                android:layout_marginRight="50dp"
                 android:src="@drawable/platotext"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="3"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:id="@+id/chaticon"
                 android:maxHeight="30dp"
                 android:clickable="true"
                 android:maxWidth="30dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/msg"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"/>
 
         </LinearLayout>
 
@@ -71,50 +73,52 @@
             android:clickable="true"
             android:maxHeight="300dp"
             android:maxWidth="300dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="6"/>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            android:weightSum="3"
+            android:layout_weight="2">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:id="@+id/book"
                 android:maxHeight="30dp"
                 android:maxWidth="30dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/book"
                 android:clickable="true"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="120dp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:id="@+id/university"
                 android:maxHeight="30dp"
                 android:adjustViewBounds="true"
-                android:layout_marginRight="100dp"
                 android:clickable="true"
                 android:src="@drawable/university"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:id="@+id/search"
                 android:maxHeight="30dp"
                 android:maxWidth="30dp"
-                android:layout_marginRight="10dp"
                 android:adjustViewBounds="true"
                 android:clickable="true"
                 android:src="@drawable/search"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"/>
 
 
         </LinearLayout>

@@ -1,4 +1,4 @@
-package edu.odu.hackathon.plato;
+package edu.odu.hackathon.plato.Util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
  */
 public class ImageText {
 
+    String TAG = "ImageText";
     Context mContext;
     public ImageText(Context context) {
         this.mContext = context;

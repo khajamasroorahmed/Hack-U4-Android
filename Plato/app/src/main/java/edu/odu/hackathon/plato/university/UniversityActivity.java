@@ -1,4 +1,4 @@
-package edu.odu.hackathon.plato;
+package edu.odu.hackathon.plato.university;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
@@ -20,12 +21,14 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import java.util.Random;
 
+import edu.odu.hackathon.plato.R;
 import edu.odu.hackathon.plato.Util.JsonWebServiceCaller;
 import edu.odu.hackathon.plato.Util.OnSwipeTouchListener;
 import edu.odu.hackathon.plato.model.MatchingRequest;
 
 public class UniversityActivity extends Activity {
 
+    String TAG = "UniversityActivity";
     public MatchingRequest request;
     public int count=0;
     public String[] interests={"1","2"};
@@ -33,6 +36,7 @@ public class UniversityActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(TAG, "Started");
         setContentView(R.layout.activity_university);
 
         new MatchingTask().execute();
@@ -73,7 +77,6 @@ public class UniversityActivity extends Activity {
                     showInterests(getApplicationContext(), request.getMatches().get(count - 1).getInterests());
                 }
             }
-
         });
 
     }

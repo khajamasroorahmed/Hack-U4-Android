@@ -14,6 +14,7 @@ import java.net.URL;
  */
 public class JsonWebServiceCaller {
 
+    String TAG = "JsonWebServiceCaller";
     public static String call(String resourcepath,String input)
     {
         HttpURLConnection connection=null;

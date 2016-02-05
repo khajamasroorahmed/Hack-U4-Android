@@ -1,5 +1,7 @@
 package edu.odu.hackathon.plato.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,10 +10,11 @@ import java.util.List;
  */
 public class MatchingRequest {
 
-    List<Match> matches=new ArrayList<Match>();
+    String TAG = "MatchingRequest";
+    List<Match> matches = new ArrayList<Match>();
 
-    public MatchingRequest()
-    {
+    public MatchingRequest() {
+        Log.v(TAG, "Started");
 
     }
 

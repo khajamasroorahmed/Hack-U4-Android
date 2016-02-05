@@ -1,10 +1,13 @@
 package edu.odu.hackathon.plato.model;
 
+import android.util.Log;
+
 /**
  * Created by Handson_2 on 2/4/2016.
  */
 public class Match {
 
+    String TAG = "Match";
     int matchingPercentage;
     String id;
     String[] interests;
@@ -13,9 +16,11 @@ public class Match {
     String displayName;
 
     public Match() {
+        Log.v(TAG, "Started");
     }
 
     public Match(int matchingPercentage, String id,  String[] interests, String displayName,String major,String university) {
+        Log.v(TAG,"Started");
         this.matchingPercentage = matchingPercentage;
         this.id = id;
         this.interests = interests;

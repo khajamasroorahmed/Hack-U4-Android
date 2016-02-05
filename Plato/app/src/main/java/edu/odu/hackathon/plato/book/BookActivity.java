@@ -1,10 +1,11 @@
-package edu.odu.hackathon.plato;
+package edu.odu.hackathon.plato.book;
 
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,18 +17,21 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import java.util.Random;
 
+import edu.odu.hackathon.plato.R;
 import edu.odu.hackathon.plato.Util.JsonWebServiceCaller;
 import edu.odu.hackathon.plato.Util.OnSwipeTouchListener;
 import edu.odu.hackathon.plato.model.BookRequest;
 
 public class BookActivity extends AppCompatActivity {
 
+    String TAG = "BookActivity";
     public BookRequest request;
     public int count=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(TAG, "Started");
         setContentView(R.layout.activity_book);
 
         View view = (View) findViewById(R.id.bookSwipes);

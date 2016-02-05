@@ -5,35 +5,33 @@
     android:orientation="vertical"
     android:background="@drawable/plainbg">
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/flInterests"
+        android:id="@+id/lvActivityChat"/>
+
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
         android:id="@+id/flInterests">
 
         <EditText
-            android:id="@+id/etSearch"
+            android:id="@+id/etChat"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:paddingLeft="40dp">
-            <requestFocus />
-        </EditText>
+            android:layout_height="wrap_content"/>
 
         <Button
-            android:id="@+id/searchBtn"
+            android:id="@+id/btChatSend"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_gravity="left|center_vertical"
-            android:layout_margin="8dp"
-            android:background="@drawable/search" />
-
-        <Button
-            android:id="@+id/delete"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="right|center_vertical"
-            android:layout_margin="8dp" />
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/msg"/>
     </FrameLayout>
 
 </RelativeLayout>
