@@ -41,7 +41,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button"
-        android:layout_below="@+id/flInterests"/>
+        android:layout_below="@+id/flInterests"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:layout_width="match_parent"

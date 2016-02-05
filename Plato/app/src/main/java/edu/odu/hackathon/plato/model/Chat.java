@@ -12,12 +12,14 @@ public class Chat {
     long timeStamp;
     String chatText;
     String displayName;
+
     public Chat(Chat item) {
         this.id = item.getId();
         this.timeStamp = item.getTimeStamp();
         this.chatText = item.getChatText();
         this.displayName = item.getDisplayName();
     }
+
     public Chat(int id, long timeStamp, String chatText, String displayName) {
         Log.v(TAG, "Started");
         this.id = id;

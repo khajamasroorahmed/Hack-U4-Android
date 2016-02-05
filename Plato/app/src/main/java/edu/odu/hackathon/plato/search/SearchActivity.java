@@ -1,6 +1,5 @@
 package edu.odu.hackathon.plato.search;
 
-
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;

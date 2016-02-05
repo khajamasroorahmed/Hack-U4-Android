@@ -12,7 +12,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +29,7 @@ public class InterestActivity extends AppCompatActivity {
 
     private static int MAX_SELECTION = 5;
     Button mBtnSubmit;
-    ListView mListView;
+    GridView mGridView;
     EditText mEditTextSearch;
     ArrayList<String> values;
     CustomInterestAdapter mAdapter;
@@ -38,7 +40,7 @@ public class InterestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.v(TAG, "Started");
         setContentView(R.layout.interests);
-        mListView = (ListView) findViewById(R.id.lvInterests);
+        mGridView = (GridView) findViewById(R.id.lvInterests);
         mEditTextSearch = (EditText) findViewById(R.id.etSearch);
         final Button btnAdd = (Button) findViewById(R.id.btnAdd);
 
@@ -74,14 +76,15 @@ public class InterestActivity extends AppCompatActivity {
         values = StaticData.getInterestList();
 //        final ListView listview = (ListView) mListView.findViewById(R.id.lvInterests);
         mAdapter = new CustomInterestAdapter(this, values);
-        mListView.setAdapter(mAdapter);
-        mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        mListView.setItemsCanFocus(false);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mGridView.setAdapter(mAdapter);
+        mGridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "Item Selected: " + mListView.getCheckedItemCount());
-                onDataPass(mListView.getCheckedItemCount());
+                Log.d(TAG, "Item Selected: " + mGridView.getCheckedItemCount());
+                TextView tvCheck = (TextView) view.findViewById(R.id.tvInterest);
+                tvCheck.setBackgroundResource(R.drawable.pressed);
+                onDataPass(mGridView.getCheckedItemCount());
             }
         });
         mBtnSubmit = (Button) findViewById(R.id.button);
