@@ -51,7 +51,7 @@ public class CustomChatAdapter extends BaseAdapter {
         Chat item = new Chat(mValues.get(position));
         Log.d(TAG, "Chat Item: " + item.toString());
 
-        if(item.getId() == selfId) {
+        if(item.getUserId() == selfId) {
             rowView = layoutInflater.inflate(R.layout.chat_self, null);
         }
         else {
@@ -59,13 +59,13 @@ public class CustomChatAdapter extends BaseAdapter {
         }
         TextView tvUserName = (TextView) rowView.findViewById(R.id.tvChatUserName);
         tvUserName.setText(item.getDisplayName());
-        if(item.getId() == selfId) {
+        if(item.getUserId() == selfId) {
             tvUserName.setText("You");
         }
         TextView tvChatText = (TextView) rowView.findViewById(R.id.tvChatText);
-        tvChatText.setText(item.getChatText());
+        tvChatText.setText(item.getMessage());
         TextView tvChatTime = (TextView) rowView.findViewById(R.id.tvChatTime);
-        tvChatTime.setText(Format.getFuzzyTime(item.getTimeStamp()).toString());
+        tvChatTime.setText(Format.getFuzzyTime(item.getEpochTime()).toString());
 
         return rowView;
     }

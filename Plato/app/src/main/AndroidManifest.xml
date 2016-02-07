@@ -18,17 +18,21 @@
 
         <activity android:name=".home.HomeActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
+
+        </activity>
+        <activity android:name=".registration.RegistrationActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".interests.InterestActivity"/>
         <activity android:name=".university.UniversityActivity" />
         <activity android:name=".book.BookActivity" />
         <activity android:name=".search.SearchActivity"/>
-        <activity android:name=".chat.ChatActivity"/>
+        <activity android:name=".chat.ChatActivity"
+            android:theme="@style/Theme.AppCompat"/>
         <activity android:name=".chatlist.ChatListActivity"/>
 
     </application>

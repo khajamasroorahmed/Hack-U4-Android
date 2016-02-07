@@ -1,7 +1,9 @@
 package edu.odu.hackathon.plato.university;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,17 +15,23 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 import edu.odu.hackathon.plato.R;
 import edu.odu.hackathon.plato.Util.JsonWebServiceCaller;
 import edu.odu.hackathon.plato.Util.OnSwipeTouchListener;
+import edu.odu.hackathon.plato.chat.ChatActivity;
+import edu.odu.hackathon.plato.model.Match;
 import edu.odu.hackathon.plato.model.MatchingRequest;
 
 public class UniversityActivity extends Activity {
@@ -35,17 +43,30 @@ public class UniversityActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        new MatchingTask().execute();
         super.onCreate(savedInstanceState);
         Log.v(TAG, "Started");
         setContentView(R.layout.activity_university);
 
-        new MatchingTask().execute();
-
         View view = (View) findViewById(R.id.universitySwipes);
+
         final TextView title=(TextView)findViewById(R.id.personName);
         final TextView univName=(TextView)findViewById(R.id.univName);
         final TextView majorName=(TextView)findViewById(R.id.majorName);
         final ImageView imageView=(ImageView)findViewById(R.id.matchScore);
+        final Button univConversation=(Button)findViewById(R.id.univConversation);
+
+        univConversation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", Integer.parseInt(request.getMatches().get(count-1).getId()));
+                bundle.putString("displayName",request.getMatches().get(count-1).getDisplayName());
+                Intent intent=new Intent(getApplicationContext(), ChatActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
 
         final Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/EMPORO.TTF");
 
@@ -120,6 +141,13 @@ public class UniversityActivity extends Activity {
 
     class MatchingTask extends AsyncTask<String, Integer, String>
     {
+        private ProgressDialog dialog=new ProgressDialog(UniversityActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            dialog.setMessage("loading matches...");
+            dialog.show();
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -134,10 +162,14 @@ public class UniversityActivity extends Activity {
                 Random random=new Random();
                 request=mapper.readValue(result,MatchingRequest.class);
 
+                Collections.sort(request.getMatches(),new ScoreComp());
                 TextView title=(TextView)findViewById(R.id.personName);
                 TextView univName=(TextView)findViewById(R.id.univName);
                 TextView majorName=(TextView)findViewById(R.id.majorName);
                 ImageView imageView=(ImageView)findViewById(R.id.matchScore);
+                Button univConversation=(Button)findViewById(R.id.univConversation);
+
+                univConversation.setVisibility(View.VISIBLE);
 
                 title.setText(request.getMatches().get(0).getDisplayName());
                 univName.setText(request.getMatches().get(0).getUniversity());
@@ -146,7 +178,9 @@ public class UniversityActivity extends Activity {
                 showInterests(getApplicationContext(),request.getMatches().get(0).getInterests());
                 count++;
                 System.out.println(request.getMatches().size());
-
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
             }
             catch (Exception exception)
             {
@@ -163,10 +197,25 @@ public class UniversityActivity extends Activity {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
                 R.layout.list_interest,items);
         GridView listView = (GridView) findViewById(R.id.interests);
+        listView.setHorizontalSpacing(10);
+        listView.setVerticalSpacing(10);
         // Assign adapter to ListView
         listView.setAdapter(dataAdapter);
 
+
         //enables filtering for the contents of the given ListView
         listView.setTextFilterEnabled(true);
+    }
+
+    class ScoreComp implements Comparator<Match> {
+
+        @Override
+        public int compare(Match e1, Match e2) {
+            if(e1.getMatchingPercentage() < e2.getMatchingPercentage()){
+                return 1;
+            } else {
+                return -1;
+            }
+        }
     }
 }

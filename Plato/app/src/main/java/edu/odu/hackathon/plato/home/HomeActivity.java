@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import edu.odu.hackathon.plato.book.BookActivity;
 import edu.odu.hackathon.plato.R;
+import edu.odu.hackathon.plato.chatlist.ChatListActivity;
 import edu.odu.hackathon.plato.interests.InterestActivity;
 import edu.odu.hackathon.plato.university.UniversityActivity;
 import edu.odu.hackathon.plato.Util.OnSwipeTouchListener;

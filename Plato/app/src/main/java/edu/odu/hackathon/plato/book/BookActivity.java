@@ -1,7 +1,13 @@
 package edu.odu.hackathon.plato.book;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +16,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -21,10 +29,13 @@ import edu.odu.hackathon.plato.R;
 import edu.odu.hackathon.plato.Util.JsonWebServiceCaller;
 import edu.odu.hackathon.plato.Util.OnSwipeTouchListener;
 import edu.odu.hackathon.plato.model.BookRequest;
+import edu.odu.hackathon.plato.search.SearchActivity;
+import edu.odu.hackathon.plato.university.UniversityActivity;
 
-public class BookActivity extends AppCompatActivity {
+public class BookActivity extends Activity {
 
     String TAG = "BookActivity";
+    static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
     public BookRequest request;
     public int count=0;
 
@@ -39,11 +50,27 @@ public class BookActivity extends AppCompatActivity {
         final TextView univName=(TextView)findViewById(R.id.bookUnivName);
         final TextView majorName=(TextView)findViewById(R.id.bookmMajorName);
 
+        ImageView university=(ImageView)findViewById(R.id.barCode);
+        university.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               scanBar(v);
+            }
+        });
+
+        ImageView search=(ImageView)findViewById(R.id.qrCode);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scanQR(v);
+            }
+        });
+
         SearchView searchView=(SearchView)findViewById(R.id.searchBook);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                new MatchingTask().execute();
+                new MatchingTask().execute(query);
                 return true;
             }
 
@@ -91,7 +118,7 @@ public class BookActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            String urlParameters = "{\"userId\": 1, \"isbn\": \"1612930425\"}";
+            String urlParameters = "{\"userId\": 1, \"isbn\": \""+params[0]+"\"}";
             return JsonWebServiceCaller.call("http://platohackathon.herokuapp.com/getBookReadUsers", urlParameters);
         }
 
@@ -105,17 +132,47 @@ public class BookActivity extends AppCompatActivity {
                 TextView univName=(TextView)findViewById(R.id.bookUnivName);
                 TextView majorName=(TextView)findViewById(R.id.bookmMajorName);
                 TextView bookinterestsTitle=(TextView)findViewById(R.id.bookInterestsTitle);
-                bookinterestsTitle.setVisibility(View.VISIBLE);
                 Button bookConversastion=(Button)findViewById(R.id.bookConversastion);
-                bookConversastion.setVisibility(View.VISIBLE);
 
-                title.setText(request.getMatches().get(0).getDisplayName());
-                univName.setText(request.getMatches().get(0).getUniversity());
-                majorName.setText(request.getMatches().get(0).getMajor());
-                showInterests(getApplicationContext(),request.getMatches().get(0).getBooks().split(", "));
-                count++;
+                if(request.getMatches().size()==0)
+                {
+                    title.setText("");
+                    univName.setText("");
+                    majorName.setText("");
+                    bookinterestsTitle.setVisibility(View.INVISIBLE);
+                    bookConversastion.setVisibility(View.INVISIBLE);
+                    showInterests(getApplicationContext(), "".split(", "));
+                    Toast.makeText(getApplicationContext(),"No Matches for this book",Toast.LENGTH_LONG).show();
+                    count=0;
+                }
+                else
+                {
+                    title.setText(request.getMatches().get(0).getDisplayName());
+                    univName.setText(request.getMatches().get(0).getUniversity());
+                    majorName.setText(request.getMatches().get(0).getMajor());
+                    bookinterestsTitle.setVisibility(View.VISIBLE);
+                    bookConversastion.setVisibility(View.VISIBLE);
+                    showInterests(getApplicationContext(), request.getMatches().get(0).getBooks().split(", "));
+                    count++;
+                }
+
+
                 System.out.println(request.getMatches().size());
 
+            }
+            catch (NullPointerException nullpointer)
+            {
+                TextView title=(TextView)findViewById(R.id.profileName);
+                TextView univName=(TextView)findViewById(R.id.bookUnivName);
+                TextView majorName=(TextView)findViewById(R.id.bookmMajorName);
+                TextView bookinterestsTitle=(TextView)findViewById(R.id.bookInterestsTitle);
+                Button bookConversastion=(Button)findViewById(R.id.bookConversastion);
+                bookConversastion.setVisibility(View.INVISIBLE);
+
+                title.setText("");
+                univName.setText("");
+                majorName.setText("");
+                showInterests(getApplicationContext(),"".split(", "));
             }
             catch (Exception exception)
             {
@@ -137,5 +194,69 @@ public class BookActivity extends AppCompatActivity {
 
         //enables filtering for the contents of the given ListView
         listView.setTextFilterEnabled(true);
+    }
+
+    //product barcode mode
+    public void scanBar(View v) {
+        try {
+            //start the scanning activity from the com.google.zxing.client.android.SCAN intent
+            Intent intent = new Intent(ACTION_SCAN);
+            intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+            startActivityForResult(intent, 0);
+        } catch (ActivityNotFoundException anfe) {
+            //on catch, show the download dialog
+            //showDialog(getApplicationContext(), "No Scanner Found", "Download a scanner code activity?", "Yes", "No").show();
+        }
+    }
+
+    //product qr code mode
+    public void scanQR(View v) {
+        try {
+            //start the scanning activity from the com.google.zxing.client.android.SCAN intent
+            Intent intent = new Intent(ACTION_SCAN);
+            intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+            startActivityForResult(intent, 0);
+        } catch (ActivityNotFoundException anfe) {
+            //on catch, show the download dialog
+            showDialog(BookActivity.this, "No Scanner Found", "Download a scanner code activity?", "Yes", "No").show();
+        }
+    }
+
+    //alert dialog for downloadDialog
+    private static AlertDialog showDialog(final Activity act, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo) {
+        AlertDialog.Builder downloadDialog = new AlertDialog.Builder(act);
+        downloadDialog.setTitle(title);
+        downloadDialog.setMessage(message);
+        downloadDialog.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Uri uri = Uri.parse("market://search?q=pname:" + "com.google.zxing.client.android");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                try {
+                    act.startActivity(intent);
+                } catch (ActivityNotFoundException anfe) {
+
+                }
+            }
+        });
+        downloadDialog.setNegativeButton(buttonNo, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        return downloadDialog.show();
+    }
+
+    //on ActivityResult method
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                //get the extras that are returned from the intent
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+                SearchView view=(SearchView)findViewById(R.id.searchBook);
+                view.setQuery(contents,true);
+                //Toast toast = Toast.makeText(this, "Content:" + contents + " Format:" + format, Toast.LENGTH_LONG);
+                //toast.show();
+            }
+        }
     }
 }

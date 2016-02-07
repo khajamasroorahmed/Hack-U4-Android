@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:layout_gravity="center"
+    android:background="@drawable/pressed"
     android:minHeight="20dp"
     android:text="JAVASCRIPT"
     android:textAppearance="?android:attr/textAppearanceSmall" />

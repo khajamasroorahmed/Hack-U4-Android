@@ -1,6 +1,7 @@
 package edu.odu.hackathon.plato.interests;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 
 import edu.odu.hackathon.plato.R;
 import edu.odu.hackathon.plato.Util.StaticData;
+import edu.odu.hackathon.plato.home.HomeActivity;
 
 /**
  * Created by kahmed on 2/4/16.
@@ -83,12 +85,28 @@ public class InterestActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "Item Selected: " + mGridView.getCheckedItemCount());
                 TextView tvCheck = (TextView) view.findViewById(R.id.tvInterest);
-                tvCheck.setBackgroundResource(R.drawable.pressed);
+                mGridView.setSelection(position);
+
+                tvCheck.setSelected(true);
+                tvCheck.setActivated(true);
+//
+//                if( mGridView.isItemChecked(position) )
+//                    tvCheck.setBackgroundResource(R.drawable.pressed);
+//                else
+//                    tvCheck.setBackgroundResource(R.drawable.normal);
+
                 onDataPass(mGridView.getCheckedItemCount());
             }
         });
         mBtnSubmit = (Button) findViewById(R.id.button);
         mBtnSubmit.setVisibility(View.GONE);
+        mBtnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

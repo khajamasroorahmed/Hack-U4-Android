@@ -2,54 +2,37 @@ package edu.odu.hackathon.plato.model;
 
 import android.util.Log;
 
+import org.json.JSONObject;
+
 /**
  * Created by handsonMacBook02 on 2/5/16.
  */
 public class Chat {
 
     String TAG = "";
-    int id;
-    long timeStamp;
-    String chatText;
-    String displayName;
 
-    public Chat(Chat item) {
-        this.id = item.getId();
-        this.timeStamp = item.getTimeStamp();
-        this.chatText = item.getChatText();
-        this.displayName = item.getDisplayName();
+    public int getUserId() {
+        return userId;
     }
 
-    public Chat(int id, long timeStamp, String chatText, String displayName) {
-        Log.v(TAG, "Started");
-        this.id = id;
-        this.timeStamp = timeStamp;
-        this.chatText = chatText;
-        this.displayName = displayName;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public int getId() {
-        return id;
+    public long getEpochTime() {
+        return epochTime;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setEpochTime(long epochTime) {
+        this.epochTime = epochTime;
     }
 
-    public long getTimeStamp() {
-        return timeStamp;
+    public String getMessage() {
+        return message;
     }
 
-    public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
-    public String getChatText() {
-        return chatText;
-    }
-
-    public void setChatText(String chatText) {
-        this.chatText = chatText;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getDisplayName() {
@@ -59,5 +42,34 @@ public class Chat {
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
+
+    int userId;
+    long epochTime;
+    String message;
+    String displayName;
+
+    public Chat()
+    {
+
+    }
+
+    public Chat(Chat item) {
+        this.userId = item.getUserId();
+        this.epochTime = item.getEpochTime();
+        this.message = item.getMessage();
+        this.displayName = item.getDisplayName();
+    }
+
+    public Chat(int id, long timeStamp, String chatText, String displayName) {
+        Log.v(TAG, "Started");
+        this.userId = id;
+        this.epochTime = timeStamp;
+        this.message = chatText;
+        this.displayName = displayName;
+    }
+
+
+
+
 
 }
